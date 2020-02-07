@@ -41,8 +41,12 @@ public class Aquarium extends GFX {
 		super(WIDTH, HEIGHT);
 	}
 
-	int fish1X = getWidth() + 100;
-	int fish2X = getWidth() + 300;
+	int fish1X = getWidth() + 10;
+	int fish2X = getWidth() - 20;
+	//the x position for red fish
+	int fish3X = 200;
+	int fish4X = -20;
+	Fish nemo = new Fish(Color.cyan, 250, 250, true);
 
 	@Override
 	public void draw(Graphics2D g) {
@@ -52,18 +56,37 @@ public class Aquarium extends GFX {
 
 		// Draw the fish!
 		DrawFish.facingLeft(g, Color.yellow, fish1X, 200);
-		// Draw the confused fish!
 		DrawFish.facingRight(g, Color.green, fish2X, 300);
 
-		// What if we wanted this little fish to swim, too?
-		DrawFish.smallFacingLeft(g, Color.red, 200, 100);
+		// create a little red fish facing left
+		DrawFish.smallFacingLeft(g, Color.red, fish3X, 100);
+		//create a little white fish facing right
+		DrawFish.smallFacingRight(g, Color.white, fish4X, 400);
+		nemo.draw(g);
+		
 
 		// Draw our snail!
 		algorithm.draw(g);
 
 		// Move the fish!
 		fish1X -= 1;
-		fish2X -= 2;
+		fish2X += 2;
+		fish3X -= 3;
+		fish4X += 4;
+		
+		//set the fish back to the bound if they swim out of the aquarium
+		if (fish3X < -40) {
+			fish3X = getWidth();		
+		}
+		if (fish2X > getWidth()+50) {
+			fish2X = -25;		
+		}
+		if (fish1X < -50) {
+			fish1X = getWidth();		
+		}
+		if (fish4X > getWidth()+45) {
+			fish4X = -20;		
+		}
 	}
 
 	public static void main(String[] args) {
