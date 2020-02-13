@@ -6,7 +6,12 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 /**
- * This class is used statically (i.e., as a library) to draw fish in various
+ * 
+ * 
+ * cited from course assignment 1 starting code
+ * at https://github.com/jjfiv/CSC212Aquarium
+ * 
+ * According to the author, this class is used statically to draw fish in various
  * positions and sizes.
  * 
  * @author jfoley
@@ -33,10 +38,10 @@ public class DrawFish {
 		g.setColor(Color.black);
 		g.draw(body);
 
-		// draw eye (still black):
+		// fill eye color:
 		g.fill(eye);
 
-		// draw tail:
+		// fill tail with darker colors:
 		Color tailColor = color.darker();
 		g.setColor(tailColor);
 		g.fill(tail);
@@ -47,8 +52,9 @@ public class DrawFish {
 	}
 
 	/**
-	 * This method is implemented by creating a new Graphics "world" located at x,y
+	 * According to the author, this method is implemented by creating a new Graphics "world" located at x,y
 	 * that is scaled in a "backwards" X world.
+	 * These are big fishes facing right.
 	 * 
 	 * @param g     the original graphics world.
 	 * @param color the color of the fish!
@@ -64,8 +70,9 @@ public class DrawFish {
 	}
 
 	/**
-	 * This method is implemented by creating a new Graphics "world" located at x,y
-	 * that is half the size of a regular one and calling our regular Fish method.
+	 * According to the author, this method creates half the size of a regular one and calls the regular Fish method.
+	 * The fishes are facing left.
+	 * These are big fishes facing left.
 	 * 
 	 * @param g     the original graphics world.
 	 * @param color the color of the fish!
@@ -81,8 +88,8 @@ public class DrawFish {
 	}
 
 	/**
-	 * This method is implemented by creating a new Graphics "world" located at x,y
-	 * that is half the size of a regular one and calling our regular Fish method.
+	 * According to the author, this method creates half the size of a regular one and calls the regular Fish method.
+	 * The fishes are facing right.
 	 * 
 	 * @param g     the original graphics world.
 	 * @param color the color of the fish!
@@ -95,5 +102,17 @@ public class DrawFish {
 		halfSize.scale(-0.5, 0.5);
 		facingLeft(halfSize, color, 0, 0);
 		halfSize.dispose();
+	}
+	
+	/**
+	 * This is a method that creates the huge shark towards left, based on the author's methods.
+	 */
+	
+	public static void hugeFacingLeft(Graphics2D g, Color color, int x, int y) {
+		Graphics2D doubleSize = (Graphics2D) g.create();
+		doubleSize.translate(x, y);
+		doubleSize.scale(2, 2);
+		facingLeft(doubleSize, color, 0, 0);
+		doubleSize.dispose();
 	}
 }

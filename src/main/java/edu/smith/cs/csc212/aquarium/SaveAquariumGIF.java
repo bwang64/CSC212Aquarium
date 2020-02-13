@@ -5,8 +5,13 @@ import java.io.File;
 public class SaveAquariumGIF {
 
 	/**
-	 * This class exists to teach you that you can have main methods in different
-	 * places! Also, you can use it to save your animation!
+	 * have main methods in different
+	 * places and save animation
+	 * 
+	 * cited from course assignment 1 starting code
+	 * at https://github.com/jjfiv/CSC212Aquarium
+	 * 
+	 * @author jfoley
 	 * 
 	 * @param args
 	 */
@@ -15,5 +20,6 @@ public class SaveAquariumGIF {
 		int numSeconds = 3;
 		app.playToGIF(new File("aquarium.gif"), 50 * numSeconds);
 	}
+	
 
 }

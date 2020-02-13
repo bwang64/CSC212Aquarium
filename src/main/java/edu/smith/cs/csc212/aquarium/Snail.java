@@ -6,13 +6,25 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * This class is about the snail who likes to eat the algae.
+ * 
+ * most parts cited from course assignment 1 starting code 
+ * at https://github.com/jjfiv/CSC212Aquarium
+ * 
+ * except that move() and setSize() are completely created by myself.
+ * 
+ * For the cited part, I revised some of the comments but pointed out the contents said by the author.
+ * I also changed some of the instance variables : I added this. eyeColor and this. pupilColor.
+ */
+
 public class Snail {
 	/**
-	 * How tall is the snail? Needed to put it upside-down.
+	 * The height of the snail.
 	 */
 	public static int HEIGHT = 50;
 	/**
-	 * The positioning of the snail. Use setSide(s) to change this.
+	 * The positioning of the snail. 
 	 */
 	private String direction;
 	/**
@@ -23,6 +35,15 @@ public class Snail {
 	 * The position of the Snail; y-coordinate.
 	 */
 	public int y;
+	/**
+	 * The status of snail.
+	 */
+	public boolean wake;
+	/**
+	 * The color of snail eye and pupil.
+	 */
+	public Color eyeColor;
+	public Color pupilColor;
 
 	/**
 	 * Create a snail at (sx, sy) with position s.
@@ -32,13 +53,34 @@ public class Snail {
 	 * @param s  - the "positioning" of the Snail
 	 */
 	public Snail(int sx, int sy, String s) {
-		this.setSide(s);
 		this.x = sx;
 		this.y = sy;
+		this.wake = false;
+		this.setSide("top");
+		this.eyeColor = Color.red;
+		this.pupilColor = Color.red;
+		
+	}
+	
+	// Set the direction of the snail according to its current position.
+	public void setDirect() {
+		if (this.y <= 52) {
+			this.setSide("top");
+		}
+		else if (this.y >= 450) {
+			this.setSide("bottom");
+		}
+		if (this.x < 52 && this.y > 52) {
+			this.setSide("left");
+		}
+		else if (this.x > 448 && this.y < 450) {
+			this.setSide("right");
+			
+		}
 	}
 
 	/**
-	 * Change which side of the the snail thinks its on.
+	 * According to the author, this method changes the side that the the snail on.
 	 * 
 	 * @param s - one of "top", "bottom", "left" or "right".
 	 */
@@ -47,9 +89,35 @@ public class Snail {
 	}
 
 	/**
-	 * TODO: move the snail about.
+	 * TODO: move the snail according to its current direction.
 	 */
 	public void move() {
+		
+		// Move if the snail wakes up and opens its eyes.
+		if(this.wake) {
+		
+			this.eyeColor = Color.white;
+			this.pupilColor = Color.black;
+			
+			if ("top".equals(this.direction)) {
+				this.x += 5;
+			    }
+			else if ("bottom".equals(this.direction)) {
+				this.x -= 5;
+				}
+			else if ("left".equals(this.direction)) {
+				this.y -= 5;
+				}
+			else if ("right".equals(this.direction)) {
+				this.y += 5;
+				}
+		}
+		
+		// Sleep if the snail is full and closes eyes.
+		else{ 
+			this.eyeColor = Color.red;
+			this.pupilColor = Color.red;
+		}
 
 	}
 
@@ -59,34 +127,28 @@ public class Snail {
 	 * @param g - the window to draw to.
 	 */
 	public void draw(Graphics2D g) {
-		// By calling move here, if we want to move our snail, we can do so.
-		// Move gets called by draw, so whenever draw gets called.
+		// Move the snail by calling draw().
 		this.move();
 
-		// By making a new Graphics2D object, we can move everything that gets drawn to
-		// it.
-		// This is kind of tricky to wrap your head around, so I gave it to you.
+		// Rotate the snail according to its current direction.
 		Graphics2D position = (Graphics2D) g.create();
 		position.translate(x, y);
 
-		// Note that I need to compare strings with ".equals" this is a Java weirdness.
+		// compare strings with ".equals"
 		if ("bottom".equals(this.direction)) {
-			drawSnail(position, Color.red, Color.white, Color.black);
+			drawSnail(position, Color.red, Color.red, this.eyeColor, this.pupilColor);
 		} else if ("top".equals(this.direction)) {
 			position.scale(-1, -1);
-			drawSnail(position, Color.red, Color.white, Color.black);
+			drawSnail(position, Color.red, Color.red, this.eyeColor, this.pupilColor);
 		} else if ("left".equals(this.direction)) {
-			// Oh no, radians.
 			position.rotate(Math.PI / 2);
-			drawSnail(position, Color.red, Color.white, Color.black);
-		} else { // we don't have to say "right" here.
-			// Oh no, radians.
+			drawSnail(position, Color.red, Color.red,  this.eyeColor, this.pupilColor);
+		} else { 			
 			position.rotate(-Math.PI / 2);
-			drawSnail(position, Color.red, Color.white, Color.black);
+			drawSnail(position, Color.red, Color.red, this.eyeColor, this.pupilColor);
 		}
 
-		// It's OK if you forget this, Java will eventually notice, but better to have
-		// it!
+		
 		position.dispose();
 	}
 
@@ -98,7 +160,7 @@ public class Snail {
 	 * @param shellColor The color of the snail shell.
 	 * @param eyeColor   The color of the snail eye.
 	 */
-	public static void drawSnail(Graphics2D g, Color bodyColor, Color shellColor, Color eyeColor) {
+	public static void drawSnail(Graphics2D g, Color bodyColor, Color shellColor, Color eyeWhiteColor, Color eyeColor) {
 		Shape body = new Rectangle2D.Double(0, 0, 40, 50);
 		Shape tentacleL = new Rectangle2D.Double(0, -20, 5, 20);
 		Shape eyeWhiteL = new Ellipse2D.Double(-4, -28, 12, 12);
@@ -107,7 +169,7 @@ public class Snail {
 		g.setColor(bodyColor);
 		g.fill(body);
 		g.fill(tentacleL);
-		g.setColor(Color.white);
+		g.setColor(eyeWhiteColor);
 		g.fill(eyeWhiteL);
 		g.setColor(eyeColor);
 		g.fill(eyePupilL);
@@ -118,7 +180,7 @@ public class Snail {
 
 		g.setColor(bodyColor);
 		g.fill(tentacleR);
-		g.setColor(Color.white);
+		g.setColor(eyeWhiteColor);
 		g.fill(eyeWhiteR);
 		g.setColor(eyeColor);
 		g.fill(eyePupilR);
