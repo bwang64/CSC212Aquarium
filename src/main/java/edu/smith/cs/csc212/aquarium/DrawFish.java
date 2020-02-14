@@ -115,4 +115,16 @@ public class DrawFish {
 		facingLeft(doubleSize, color, 0, 0);
 		doubleSize.dispose();
 	}
+	
+	/**
+	 * This is a method that creates the huge shark towards right, based on the author's methods.
+	 */
+	
+	public static void hugeFacingRight(Graphics2D g, Color color, int x, int y) {
+		Graphics2D doubleSize = (Graphics2D) g.create();
+		doubleSize.translate(x, y);
+		doubleSize.scale(2, 2);
+		facingRight(doubleSize, color, 0, 0);
+		doubleSize.dispose();
+	}
 }

@@ -5,8 +5,10 @@ import java.awt.Graphics2D;
 import java.util.Random;
 
 /**
- * This a class of the shark, with methods including hunt() and draw(), 
- * and instance variables including x, y, size, color, speed, destX, and destY..
+ * This a class of the shark, with methods including hunt(), leave(), and draw(), 
+ * and instance variables including x, y, size, color, speed, isLeft, fishEaten, isHunting, destX, and destY.
+ * The shark swims towards the fishes one by one and eat them, once all fishes are eaten, the shark would leave and that's the end.
+ * To call the shark, you need to turn on the shark mode in Aquarium.java line 95.
  */
 public class Shark {
 	
@@ -16,6 +18,14 @@ public class Shark {
 	int x;
 	int y;
 	/**
+	 * whether the fish is eaten.
+	 */
+	boolean fishEaten;
+	/**
+	 * whether the shark is hunting.
+	 */
+	boolean isHunting;
+	/**
 	 * The color of the shark.
 	 */
 	Color color;
@@ -23,6 +33,10 @@ public class Shark {
 	 * The speed of the shark.
 	 */
 	int speed;
+	/**
+	 * The direction of the shark.
+	 */
+	boolean isLeft;
 	/**
 	 * Create a random number generator.
 	 */
@@ -41,31 +55,53 @@ public class Shark {
 	public Shark(){
 	this.x = rand.nextInt (80)+500;
 	this.y = rand.nextInt (500);
-	this.speed = 1;
+	this.speed = 3;
+	this.fishEaten = false;
+	this.isHunting = true;
+	this.isLeft = true;
 }
 	// This is a method that draws the shark.
-	public void draw(Graphics2D g, Fish[] fishes) {
+	public boolean draw(Graphics2D g, Fish fish) {
+		
+		if (isLeft) {
 		DrawFish.hugeFacingLeft(g, Color.cyan, this.x, this.y);
-		this.hunt(fishes);
+		}
+		
+		else {
+			DrawFish.hugeFacingRight(g, Color.cyan, this.x, this.y);
+		}
+		if (this.isHunting) {
+		this.hunt(fish);
+		}
+		return this.fishEaten;
+	}
+	
+	// Shark leaves after eating all the fish
+	public void leave() {
+		this.isLeft = true;
+		this.x -= 2;
+		if (this.x < -100) {
+			this.x = -100;
+		}
 	}
 	
 	// This is a method that allows the shark to hunt according to each fish's location.
-	public void hunt(Fish[] fishes) {
-		for (int i = 0; i < 12; i++) {
-			this.destX=fishes[i].x;
-			this.destY=fishes[i].y;
+	public void hunt(Fish fish) {
+		
+			this.destX=fish.x;
+			this.destY=fish.y;
 			
-			if (Math.abs(this.destX - this.x) <= this.speed || Math.abs(this.destY - this.y) <= this.speed) {
-				this.destX = rand.nextInt(500);
-				this.destY = rand.nextInt(500);
+			// make the shark activate depending on the prey.
+			if (Math.abs(this.destX - this.x) <= this.speed || Math.abs(this.destY - this.y) <= 1) {
+				this.fishEaten = true;
 			}
-			
+						
 			if (this.destX < this.x ) {
-				//this.isLeft = true;	
+				this.isLeft = true;	
 				this.x -= this.speed;
 			}
 			else if (this.destX > this.x ) {
-				//this.isLeft = false;	
+				this.isLeft = false;	
 				this.x += this.speed;
 			}
 			
@@ -76,6 +112,6 @@ public class Shark {
 				this.y += this.speed;
 			}
 		}	
-	}
+	
 }
 

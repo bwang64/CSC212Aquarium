@@ -34,9 +34,9 @@ public class Bubble {
 	int counter;
 	
 	// This is a bubble generator.
-	public Bubble() {
-		this.x = rand.nextInt(500);
-		this.y = rand.nextInt(500);
+	public Bubble(Treasure treasureBox) {
+		this.x = rand.nextInt(40)+treasureBox.x; // make bubbles come out from the box.
+		this.y = rand.nextInt(20)+480;
 		this.speed = rand.nextDouble()+rand.nextInt(4)+1;
 		this.size = rand.nextInt(5)+10;
 		this.counter = 0;

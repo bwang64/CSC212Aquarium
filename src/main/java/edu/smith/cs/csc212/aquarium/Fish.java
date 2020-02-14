@@ -8,12 +8,13 @@ import java.util.Random;
 
 /**
  * This is a class of the fishes in the aquarium, with the methods draw(), hungyDraw(), eat(), seekFood(), and swim().
- * And the instance variables including size, x, y, destX, destY, speed, color, size, direction, hungry meter.
+ * And the instance variables including size, x, y, destX, destY, speed, color, size, direction, hungry meter, isEaten.
+ * If the fish is eaten, it would disappear.
  */
 
 public class Fish {
 	/**
-	 * Theposition of the fish.
+	 * The position of the fish.
 	 */
 	int x;
 	int y;
@@ -58,6 +59,10 @@ public class Fish {
 	 * The original color as stored variable.
 	 */
 	Color colorOriginal;
+	/**
+	 * Whether the fish is eaten.
+	 */
+	boolean isEaten;
 	
 	/**
 	 * A fish class generator.
@@ -73,6 +78,7 @@ public class Fish {
 		this.speed=rand.nextDouble()*2+1;
 		this.destX = rand.nextInt(500);
 		this.destY = rand.nextInt(500);
+		this.isEaten = false;
 		if (this.isLittle) {
 			this.hungry = 500;
 			this.total = 500;
@@ -88,6 +94,7 @@ public class Fish {
 	
 	// The method that draws the fish depending on the size and direction of the fish.
 	public void draw(Graphics2D g) {
+		if (!isEaten) {
 		if (this.isLeft && this.isLittle) {
 			DrawFish.smallFacingLeft(g, this.color, this.x, this.y);
 		}
@@ -103,6 +110,7 @@ public class Fish {
 		this.swim();
 		this.hungryDraw(g);
 		this.eat();
+		}
 		
 	}
 	
