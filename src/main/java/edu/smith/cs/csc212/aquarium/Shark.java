@@ -92,23 +92,23 @@ public class Shark {
 			this.destY=fish.y;
 			
 			// make the shark activate depending on the prey.
-			if (Math.abs(this.destX - this.x) <= this.speed || Math.abs(this.destY - this.y) <= 1) {
+			if (Math.sqrt((this.destX - this.x)*(this.destX-this.x)+(this.destY-this.y)*(this.destY-this.y))<=10) {
 				this.fishEaten = true;
 			}
 						
-			if (this.destX < this.x ) {
+			if (this.destX < this.x - this.speed) {
 				this.isLeft = true;	
 				this.x -= this.speed;
 			}
-			else if (this.destX > this.x ) {
+			else if (this.destX > this.x + this.speed) {
 				this.isLeft = false;	
 				this.x += this.speed;
 			}
 			
-			if (this.destY < this.y ) {
+			if (this.destY < this.y - this.speed) {
 				this.y -= this.speed;
 			}
-			else if (this.destY > this.y ) {	
+			else if (this.destY > this.y + this.speed) {	
 				this.y += this.speed;
 			}
 		}	
